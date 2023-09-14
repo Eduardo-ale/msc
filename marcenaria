@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo de Caixa da Marcenaria</title>
+    <style>
+        body { color: hsl(182, 93%, 49%);
+            font-family: Arial, sans-serif;
+            background-image: url("marce10.jpeg")
+            
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        label {
+            padding: 10px;;
+            display: block;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+        input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .material {
+            
+            display: block;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        button {
+            padding: 20px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #materiais {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Orcamentos-MSC</h1>
+        <label for="cliente">Nome do Cliente:</label>
+        <input type="text" id="cliente" placeholder="Nome do Cliente">
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" placeholder="Digite o CPF do Cliente">
+        <label for="contato">Contato:</label>
+        <input type="text" id="contato" placeholder="Digite o telefone do cliente">
+        <label for="inicio">Data de Início do Trabalho:</label>
+        <input type="date" id="inicio">
+        <label for="prevista">Data Prevista de Entrega:</label>
+        <input type="date" id="prevista">
+        <label for="pagamento">Forma de pagamento:</label>
+        <input type="text" id="pagamento" placeholder="Digite a forma de pagamento">
+
+        <div id="materiais">
+            <h3>Lista de Materiais</h3>
+            <div class="material">
+                <input type="text" id="material" placeholder="Nome do Material">
+                <input type="text" id="valor" placeholder="Valor do Material">
+                <button onclick="adicionarMaterial()">Adicionar</button>
+            </div>
+        </div>
+
+        <h2>Total de Materiais: <span id="totalMateriais">0.00 R$</span></h2>
+        <div class="container">
+            <h3>Calcular Valor da Mão de Obra</h3>
+            <label for="valorOriginal">Valor Original:</label>
+            <input type="number" id="valorOriginal" placeholder="Insira o Valor Original">
+            <button onclick="calcularDesconto()">Calcular Mão de obra</button>
+    
+            <div id="resultado"></div>
+        </div>
+    </div>
+
+    <script>
+        var totalMateriais = 0;
+
+        function adicionarMaterial() {
+            var material = document.getElementById("material").value;
+            var valor = parseFloat(document.getElementById("valor").value);
+
+            if (material === "" || isNaN(valor)) {
+                alert("Por favor, preencha um nome de material válido e um valor numérico.");
+                return;
+            }
+
+            var materiais = document.getElementById("materiais");
+            var newMaterial = document.createElement("div");
+            newMaterial.className = "material";
+            newMaterial.innerHTML = `
+                <input type="text" value="${material}" readonly>
+                <input type="number" value="${valor.toFixed(2)}" readonly>
+            `;
+            materiais.appendChild(newMaterial);
+
+            totalMateriais += valor;
+            document.getElementById("totalMateriais").textContent = totalMateriais.toFixed(2);
+
+            document.getElementById("material").value = "";
+            document.getElementById("valor").value = "";
+            
+        }
+    </script>
+     <script>
+        function calcularDesconto() {
+            var valorOriginal = parseFloat(document.getElementById("valorOriginal").value);
+
+            if (isNaN(valorOriginal)) {
+                alert("Por favor, insira um valor numérico válido.");
+                return;
+            }
+
+            var desconto = valorOriginal * 0.80; // 80% MÃO DE OBRA
+            var VALORMÃODEOBRA = valorOriginal + desconto;
+
+            var resultadoElement = document.getElementById("resultado");
+            resultadoElement.textContent = `O Valor Total Do Serviço com 80% De Mão de Obra Em Cima Do Valor Do Material É: R$ ${VALORMÃODEOBRA.toFixed(2)}`;
+        }
+    </script>
+
+</body>
+</html>
